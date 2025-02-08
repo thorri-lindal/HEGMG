@@ -6,7 +6,7 @@
     <title>Hvað er Gísli Marteinn gamall?</title>
     
     <link rel="icon" href="https://em-content.zobj.net/source/apple/391/nerd-face_1f913.png">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
     <style>
@@ -66,6 +66,19 @@
             left: 50%;
             transform: translateX(-50%);
         }
+
+        .footer {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: #f5f5f5;
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 
@@ -104,6 +117,8 @@
     <button id="share-btn" class="absolute bottom-4 right-4 text-sm text-gray-700 opacity-5 hover:opacity-30">
         📤 Deila
     </button>
+
+    <a href="https://www.thorri.online" target="_blank" class="footer">Made by Þorri</a>
 
     <script>
         function calculateAge() {
