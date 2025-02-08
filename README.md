@@ -1,5 +1,6 @@
 # HEGMG
 # Hin eilífa ráðgáta: Aldur Gísla Marteins.
+![Gísli Marteinn brosandi](assets/IMG_7031.jpeg)
 
 Á hverri viku, þegar þjóðin safnast saman til að horfa á *Vikan með Gísla Marteini*, hljómar ein spurning í stofum landsins og á netvettvangi: **„Hversu gamall er Gísli Marteinn Baldursson?“**
 
