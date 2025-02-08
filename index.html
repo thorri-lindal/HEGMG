@@ -50,6 +50,7 @@
             width: 160px;
             height: 160px;
             object-fit: cover;
+            cursor: pointer;
         }
 
         .profile-img:hover {
@@ -92,6 +93,39 @@
         .footer:hover {
             color: rgba(255, 255, 255, 0.5);
         }
+
+        /* Status Bar */
+        .status-container {
+            display: none;
+            width: 100%;
+            max-width: 300px;
+            height: 30px;
+            background: rgba(255, 0, 0, 0.2);
+            border: 2px solid rgba(255, 0, 0, 0.5);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            margin-top: 20px;
+        }
+
+        .status-bar {
+            width: 17%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255, 0, 0, 0.5), rgba(255, 0, 0, 1));
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+            transition: width 0.5s ease-in-out;
+        }
+
+        .status-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            font-weight: bold;
+            color: white;
+            font-size: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
     </style>
 </head>
 
@@ -125,6 +159,12 @@
         </div>
 
         <p id="visit-counter" class="counter"></p>
+
+        <!-- Status Bar (Hidden at start) -->
+        <div class="status-container" id="status-container">
+            <div class="status-bar"></div>
+            <div class="status-text">17%</div>
+        </div>
     </div>
 
     <button id="share-btn" class="absolute bottom-4 right-4 text-sm text-gray-700 opacity-5 hover:opacity-30">
@@ -156,12 +196,13 @@
             setInterval(updateTime, 10);
         }
 
-        async function updateVisitCounter() {
-            const url = "https://api.countapi.xyz/hit/hegmg/visits";
-            let response = await fetch(url);
-            let data = await response.json();
-            document.getElementById('visit-counter').innerText = `Heimsóknir: ${data.value}`;
-        }
+        let clickCount = 0;
+        document.getElementById("profile-img").addEventListener("click", function() {
+            clickCount++;
+            if (clickCount === 10) {
+                document.getElementById("status-container").style.display = "block";
+            }
+        });
 
         updateVisitCounter();
         calculateAge();
