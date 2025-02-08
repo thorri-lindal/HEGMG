@@ -45,31 +45,57 @@
             color: white;
         }
 
-        .profile-container {
-            position: relative;
+        .profile-img {
+            transition: opacity 0.5s ease-in-out;
             width: 160px;
             height: 160px;
-        }
-
-        .profile-img {
-            width: 100%;
-            height: 100%;
             object-fit: cover;
             cursor: pointer;
+            transform: translateY(-20px); /* Move image 20px upward */
+        }
+
+        .profile-img:hover {
+            content: url("assets/IMG_7031.jpeg");
+        }
+
+        /* Status Bar */
+        .status-container {
+            display: none;
+            width: 80%;
+            max-width: 400px;
+            height: 40px;
+            background: rgba(255, 0, 0, 0.2);
+            border: 2px solid rgba(255, 0, 0, 0.5);
+            border-radius: 15px;
+            overflow: hidden;
             position: absolute;
-            transition: opacity 0.5s ease-in-out;
+            top: 80%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
-        .profile-img.hover {
-            opacity: 0;
+        .status-bar {
+            width: 17%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(120, 0, 0, 0.6), rgba(255, 0, 0, 0.9));
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+            animation: pulseRed 2s infinite alternate;
         }
 
-        .profile-container:hover .profile-img {
-            opacity: 0;
+        @keyframes pulseRed {
+            0% { background: rgba(120, 0, 0, 0.6); box-shadow: 0 0 5px rgba(255, 0, 0, 0.6); }
+            100% { background: rgba(255, 0, 0, 0.9); box-shadow: 0 0 15px rgba(255, 0, 0, 1); }
         }
 
-        .profile-container:hover .profile-img.hover {
-            opacity: 1;
+        .status-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            font-weight: bold;
+            color: white;
+            font-size: 18px;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
         .footer {
@@ -100,9 +126,13 @@
 
     <div class="relative glass rounded-2xl shadow-2xl max-w-md w-full mx-auto text-center">
         
-        <div class="profile-container mx-auto">
-            <img src="assets/IMG_7022.jpeg" alt="Gísli Marteinn Baldursson" class="profile-img" id="profile-img">
-            <img src="assets/IMG_7031.jpeg" alt="Gísli Marteinn Baldursson Smiling" class="profile-img hover">
+        <div class="flex justify-center mb-4">
+            <img 
+                src="assets/IMG_7022.jpeg" 
+                alt="Gísli Marteinn Baldursson" 
+                class="profile-img rounded-lg shadow-xl border-4 border-gray-600 object-cover ring-4 ring-white ring-opacity-20"
+                id="profile-img"
+            >
         </div>
 
         <h2 class="text-2xl md:text-3xl font-bold mb-2 text-white">
@@ -117,42 +147,47 @@
             Reikna...
         </div>
 
+        <!-- Status Bar (Hidden at start) -->
+        <div class="status-container" id="status-container">
+            <div class="status-bar"></div>
+            <div class="status-text">17%</div>
+        </div>
     </div>
 
     <a href="https://www.thorri.online" target="_blank" class="footer">Made by Þorri</a>
 
     <script>
-        function calculateAge() {
-            const birthDate = new Date('1972-02-26T00:00:00Z');
-            const now = new Date();
+        function updateAge() {
+            const birthDate = new Date('1972-02-26T00:00:00');
 
-            const diffTime = now - birthDate;
-            const diffMilliseconds = diffTime % 1000;
-            const diffSeconds = Math.floor(diffTime / 1000) % 60;
-            const diffMinutes = Math.floor(diffTime / (1000 * 60)) % 60;
-            const diffHours = Math.floor(diffTime / (1000 * 60 * 60)) % 24;
-            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) % 365;
-            const diffYears = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 365.25));
+            function calculate() {
+                const now = new Date();
+                const diff = now - birthDate;
+                
+                const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+                const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24));
+                const hours = now.getHours().toString().padStart(2, '0');
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const seconds = now.getSeconds().toString().padStart(2, '0');
+                const milliseconds = now.getMilliseconds().toString().padStart(3, '0');
 
-            document.getElementById('age').innerText = 
-                `${diffYears} ár, ${diffDays} dagar, ${diffHours} klst, ${diffMinutes} mín, ${diffSeconds} sek, ${diffMilliseconds} ms`;
-        }
-
-        setInterval(calculateAge, 1);
-        calculateAge();
-
-        async function updateVisitCounter() {
-            const url = "https://raw.githubusercontent.com/thorri-lindal/HEGMG/main/visits.json";
-
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-                let currentCount = data.count || 0;
-                document.getElementById('visit-counter').innerText = `Heimsóknir: ${currentCount}`;
-            } catch (error) {
-                console.error("Error fetching visit count:", error);
+                document.getElementById('age').innerHTML = 
+                    `${years} ár, ${days} dagar, ${hours} klst, ${minutes} mín, ${seconds} sek, ${milliseconds} ms`;
             }
+
+            calculate();
+            setInterval(calculate, 10);
         }
+
+        let clickCount = 0;
+        document.getElementById("profile-img").addEventListener("click", function() {
+            clickCount++;
+            if (clickCount === 10) {
+                document.getElementById("status-container").style.display = "block";
+            }
+        });
+
+        updateAge();
     </script>
 </body>
 </html>
