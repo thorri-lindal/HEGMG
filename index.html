@@ -5,24 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hvað er Gísli Marteinn gamall?</title>
     
-    <!-- ✅ Favicon (Glasses Emoji) -->
     <link rel="icon" href="https://em-content.zobj.net/source/apple/391/nerd-face_1f913.png">
-
-    <!-- ✅ Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
-    
-    <!-- ✅ Correct Tailwind CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
     <style>
-        /* ✅ Apply Poppins as the main font */
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(120deg, #1a1e27, #222b3a);
+            background: linear-gradient(180deg, #0f131a, #1a202c);
             transition: background 1s ease-in-out;
         }
 
-        /* ✅ Softer, subtle glow around "er" */
         .highlight {
             position: relative;
             color: #facc15;
@@ -36,27 +29,25 @@
             100% { text-shadow: 0 0 6px rgba(255, 204, 0, 0.5); }
         }
 
-        /* ✅ Glassmorphism Effect */
         .glass {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 2.5rem;
-            height: 500px; /* ⬆️ Made taller */
+            height: 500px;
         }
 
-        /* ✅ Hover Effect: Swap Image (Now using IMG_7031.jpeg) */
         .profile-img {
             transition: opacity 0.5s ease-in-out;
             width: 160px;
             height: 160px;
             object-fit: cover;
         }
+
         .profile-img:hover {
             content: url("assets/IMG_7031.jpeg");
         }
 
-        /* ✅ Fade-In Effect for Timer */
         .fade {
             opacity: 0;
             animation: fadeIn 0.5s ease-in-out forwards;
@@ -66,29 +57,17 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
-
-        /* ✅ Dark Mode Toggle */
-        .dark-mode {
-            background: linear-gradient(120deg, #0f131a, #19222e);
-        }
     </style>
 </head>
 
 <body class="min-h-screen flex flex-col items-center justify-center p-4 text-white">
     
-    <!-- ✅ Dark Mode Toggle (Top Right Corner) -->
-    <button id="dark-mode-toggle" class="absolute top-4 right-4 text-2xl">
-        🌙
-    </button>
-
-    <!-- ✅ Title -->
     <h1 class="text-4xl md:text-5xl font-light text-center mb-6">
         Hvað <span class="highlight">er</span> Gísli Marteinn gamall?
     </h1>
 
     <div class="relative glass rounded-2xl shadow-2xl max-w-md w-full mx-auto text-center">
         
-        <!-- ✅ Profile Image (Hover to Swap) -->
         <div class="flex justify-center mb-4">
             <img 
                 src="assets/IMG_7022.jpeg" 
@@ -98,23 +77,19 @@
             >
         </div>
 
-        <!-- ✅ Name -->
         <h2 class="text-2xl md:text-3xl font-bold mb-2">
             Gísli Marteinn Baldursson
         </h2>
 
-        <!-- ✅ Birth Date -->
         <div class="px-4 py-2 rounded-full bg-gray-700 text-lg md:text-xl mb-4">
             Fæddur: 26. Febrúar 1972
         </div>
 
-        <!-- ✅ Dynamic Age Counter -->
         <div id="age" class="text-2xl md:text-3xl font-bold text-blue-300 mt-4 tracking-wide text-center fade">
             Reikna...
         </div>
     </div>
 
-    <!-- ✅ Subtle Share Button -->
     <button id="share-btn" class="absolute bottom-4 right-4 text-sm text-gray-700 opacity-5 hover:opacity-30">
         📤 Deila
     </button>
@@ -142,22 +117,15 @@
             setInterval(updateTime, 10);
         }
 
-        // ✅ Easter Egg: Click Face 5 Times for Popup
         let clickCount = 0;
         document.getElementById('profile-img').addEventListener('click', () => {
             clickCount++;
             if (clickCount === 5) {
                 alert("Vinsamlegast hættu");
-                clickCount = 0; // Reset counter
+                clickCount = 0;
             }
         });
 
-        // ✅ Dark Mode Toggle
-        document.getElementById('dark-mode-toggle').addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-        });
-
-        // ✅ Share Button (Copy Link)
         document.getElementById('share-btn').addEventListener('click', () => {
             navigator.clipboard.writeText(window.location.href);
             alert("Hlekkur afritaður!");
