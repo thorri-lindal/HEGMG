@@ -128,28 +128,11 @@
             setInterval(updateTime, 10);
         }
 
-        let clickCount = 0;
-        document.getElementById('profile-img').addEventListener('click', () => {
-            clickCount++;
-            if (clickCount === 5) {
-                alert("Vinsamlegast hættu");
-                clickCount = 0;
-            }
-        });
-
-        document.getElementById('share-btn').addEventListener('click', () => {
-            navigator.clipboard.writeText(window.location.href);
-            alert("Hlekkur afritaður!");
-        });
-
-        function updateVisitCounter() {
-            if (!localStorage.getItem('visitCount')) {
-                localStorage.setItem('visitCount', 1);
-            } else {
-                let count = parseInt(localStorage.getItem('visitCount')) + 1;
-                localStorage.setItem('visitCount', count);
-            }
-            document.getElementById('visit-counter').innerText = `Heimsóknir: ${localStorage.getItem('visitCount')}`;
+        async function updateVisitCounter() {
+            const url = "https://api.countapi.xyz/hit/hegmg/visits";
+            let response = await fetch(url);
+            let data = await response.json();
+            document.getElementById('visit-counter').innerText = `Heimsóknir: ${data.value}`;
         }
 
         updateVisitCounter();
