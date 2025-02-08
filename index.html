@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hvað er Gísli Marteinn gamall?</title>
     
+    <!-- ✅ Favicon (Glasses Emoji) -->
+    <link rel="icon" href="https://em-content.zobj.net/source/apple/391/nerd-face_1f913.png">
+
     <!-- ✅ Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
     
@@ -15,51 +18,101 @@
         /* ✅ Apply Poppins as the main font */
         body {
             font-family: 'Poppins', sans-serif;
+            background: linear-gradient(120deg, #1a1e27, #222b3a); /* Subtle background animation */
+            transition: background 1s ease-in-out;
         }
 
-        /* ✅ Add a pulsating glow effect to "er" */
+        /* ✅ Softer Glow Around "er" */
         .highlight {
             position: relative;
-            color: #facc15; /* Yellow accent */
+            color: #facc15;
             font-weight: 700;
-            text-shadow: 0 0 10px rgba(255, 204, 0, 0.8), 0 0 20px rgba(255, 204, 0, 0.5);
-            animation: glow 2s infinite alternate;
+        }
+        
+        .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: rgba(255, 204, 0, 0.5);
+            filter: blur(4px);
+            animation: pulse 2s infinite alternate;
         }
 
-        @keyframes glow {
-            0% { text-shadow: 0 0 10px rgba(255, 204, 0, 0.8), 0 0 20px rgba(255, 204, 0, 0.5); }
-            100% { text-shadow: 0 0 15px rgba(255, 204, 0, 1), 0 0 25px rgba(255, 204, 0, 0.7); }
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
         }
 
-        /* ✅ Make the profile image a rounded square */
-        .rounded-square {
-            border-radius: 20px; /* Less than 50% for a rounded square */
+        /* ✅ Glassmorphism Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* ✅ Hover Effect: Swap Image */
+        .profile-img {
+            transition: opacity 0.5s ease-in-out;
+        }
+        .profile-img:hover {
+            content: url("assets/IMG_7022_smile.jpeg"); /* Change to smiling image */
+        }
+
+        /* ✅ Fade-In Effect for Timer */
+        .fade {
+            opacity: 0;
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ✅ Hidden Easter Egg (Birthday Countdown) */
+        .hidden {
+            display: none;
+        }
+
+        /* ✅ Dark Mode Toggle */
+        .dark-mode {
+            background: linear-gradient(120deg, #0f131a, #19222e);
         }
     </style>
 </head>
 
-<body class="bg-gray-800 min-h-screen flex flex-col items-center justify-center p-4 text-white">
+<body class="min-h-screen flex flex-col items-center justify-center p-4 text-white">
     
-    <!-- ✅ Title at the top -->
-    <h1 class="text-4xl md:text-5xl font-bold text-center mb-6">
+    <!-- ✅ Dark Mode Toggle (Top Right Corner) -->
+    <button id="dark-mode-toggle" class="absolute top-4 right-4 text-2xl">
+        🌙
+    </button>
+
+    <!-- ✅ Title -->
+    <h1 class="text-4xl md:text-5xl font-light text-center mb-6">
         Hvað <span class="highlight">er</span> Gísli Marteinn gamall?
     </h1>
 
-    <div class="relative bg-gray-900 bg-opacity-90 backdrop-blur-lg p-8 rounded-2xl shadow-2xl max-w-md w-full mx-auto text-center border border-gray-700">
+    <div class="relative glass p-8 rounded-2xl shadow-2xl max-w-md w-full mx-auto text-center">
         
-        <!-- ✅ Profile Image (Now rounded square) -->
+        <!-- ✅ Profile Image (Hover to Swap) -->
         <div class="flex justify-center mb-4">
             <img 
                 src="assets/IMG_7022.jpeg" 
                 alt="Gísli Marteinn Baldursson" 
-                class="rounded-square shadow-xl border-4 border-gray-600 w-40 h-40 object-cover ring-4 ring-white ring-opacity-20"
+                class="profile-img rounded-lg shadow-xl border-4 border-gray-600 w-40 h-40 object-cover ring-4 ring-white ring-opacity-20"
+                id="profile-img"
             >
         </div>
 
-        <!-- ✅ Name (Now fits above the "Fæddur" section) -->
-        <h2 class="text-2xl md:text-3xl font-bold mb-2">
+        <!-- ✅ Name (Click for Fun Fact) -->
+        <h2 class="text-2xl md:text-3xl font-bold mb-2 cursor-pointer" id="fun-fact">
             Gísli Marteinn Baldursson
         </h2>
+        <p id="fact-text" class="text-sm opacity-75 hidden"></p>
 
         <!-- ✅ Birth Date -->
         <div class="px-4 py-2 rounded-full bg-gray-700 text-lg md:text-xl mb-4">
@@ -67,35 +120,56 @@
         </div>
 
         <!-- ✅ Dynamic Age Counter -->
-        <div id="age" class="text-2xl md:text-3xl font-bold text-blue-300 mt-4 tracking-wide text-center">
+        <div id="age" class="text-2xl md:text-3xl font-bold text-blue-300 mt-4 tracking-wide text-center fade">
             Reikna...
+        </div>
+
+        <!-- ✅ Hidden Easter Egg (Birthday Countdown) -->
+        <div id="birthday-countdown" class="text-lg text-gray-300 mt-4 hidden fade">
+            <strong>Afmæli 🥳:</strong> <span id="countdown"></span>
         </div>
     </div>
 
+    <!-- ✅ Subtle Share Button -->
+    <button id="share-btn" class="absolute bottom-4 right-4 text-sm text-gray-700 opacity-5 hover:opacity-30">
+        📤 Deila
+    </button>
+
     <script>
         function calculateAge() {
-            const birthDate = new Date('1972-02-26T00:00:00'); // Exact birth time
+            const birthDate = new Date('1972-02-26T00:00:00');
 
             function updateTime() {
-                const now = performance.now(); // High precision timestamp
-                const nowDate = new Date();
+                const now = new Date();
+                const diff = now - birthDate;
                 
-                const diffTime = nowDate - birthDate + now; // Adjust with milliseconds
-                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-                const years = Math.floor(diffDays / 365.25);
-                const remainingDays = Math.floor(diffDays % 365.25);
-                const hours = nowDate.getHours().toString().padStart(2, '0');
-                const minutes = nowDate.getMinutes().toString().padStart(2, '0');
-                const seconds = nowDate.getSeconds().toString().padStart(2, '0');
-                const milliseconds = Math.floor(nowDate.getMilliseconds()).toString().padStart(3, '0'); // Three-digit ms
+                const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+                const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24));
+                const hours = now.getHours().toString().padStart(2, '0');
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const seconds = now.getSeconds().toString().padStart(2, '0');
+                const milliseconds = now.getMilliseconds().toString().padStart(3, '0');
 
-                document.getElementById('age').textContent = 
-                    `${years} ár, ${remainingDays} dagar, ${hours} klst, ${minutes} mín, ${seconds} sek, ${milliseconds} ms`;
+                document.getElementById('age').innerHTML = 
+                    `${years} ár, ${days} dagar, ${hours} klst, ${minutes} mín, ${seconds} sek, ${milliseconds} ms`;
             }
 
             updateTime();
-            setInterval(updateTime, 10); // Update every 10ms
+            setInterval(updateTime, 10);
         }
+
+        document.getElementById('profile-img').addEventListener('click', () => {
+            document.getElementById('birthday-countdown').classList.toggle('hidden');
+        });
+
+        document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+        });
+
+        document.getElementById('share-btn').addEventListener('click', () => {
+            navigator.clipboard.writeText(window.location.href);
+            alert("Hlekkur afritaður!");
+        });
 
         calculateAge();
     </script>
