@@ -18,32 +18,22 @@
         /* ✅ Apply Poppins as the main font */
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(120deg, #1a1e27, #222b3a); /* Subtle background animation */
+            background: linear-gradient(120deg, #1a1e27, #222b3a);
             transition: background 1s ease-in-out;
         }
 
-        /* ✅ Softer Glow Around "er" */
+        /* ✅ Softer, subtle glow around "er" */
         .highlight {
             position: relative;
             color: #facc15;
             font-weight: 700;
-        }
-        
-        .highlight::after {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background-color: rgba(255, 204, 0, 0.5);
-            filter: blur(4px);
-            animation: pulse 2s infinite alternate;
+            text-shadow: 0 0 5px rgba(255, 204, 0, 0.4);
+            animation: subtleGlow 2s infinite alternate;
         }
 
-        @keyframes pulse {
-            0% { opacity: 0.5; }
-            100% { opacity: 1; }
+        @keyframes subtleGlow {
+            0% { text-shadow: 0 0 3px rgba(255, 204, 0, 0.3); }
+            100% { text-shadow: 0 0 6px rgba(255, 204, 0, 0.5); }
         }
 
         /* ✅ Glassmorphism Effect */
@@ -51,11 +41,16 @@
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2.5rem;
+            height: 500px; /* ⬆️ Made taller */
         }
 
         /* ✅ Hover Effect: Swap Image */
         .profile-img {
             transition: opacity 0.5s ease-in-out;
+            width: 160px; /* ⬆️ Increased size */
+            height: 160px; /* ⬆️ Increased size */
+            object-fit: cover; /* Less cropped */
         }
         .profile-img:hover {
             content: url("assets/IMG_7022_smile.jpeg"); /* Change to smiling image */
@@ -70,11 +65,6 @@
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
-        }
-
-        /* ✅ Hidden Easter Egg (Birthday Countdown) */
-        .hidden {
-            display: none;
         }
 
         /* ✅ Dark Mode Toggle */
@@ -96,23 +86,22 @@
         Hvað <span class="highlight">er</span> Gísli Marteinn gamall?
     </h1>
 
-    <div class="relative glass p-8 rounded-2xl shadow-2xl max-w-md w-full mx-auto text-center">
+    <div class="relative glass rounded-2xl shadow-2xl max-w-md w-full mx-auto text-center">
         
         <!-- ✅ Profile Image (Hover to Swap) -->
         <div class="flex justify-center mb-4">
             <img 
                 src="assets/IMG_7022.jpeg" 
                 alt="Gísli Marteinn Baldursson" 
-                class="profile-img rounded-lg shadow-xl border-4 border-gray-600 w-40 h-40 object-cover ring-4 ring-white ring-opacity-20"
+                class="profile-img rounded-lg shadow-xl border-4 border-gray-600 object-cover ring-4 ring-white ring-opacity-20"
                 id="profile-img"
             >
         </div>
 
-        <!-- ✅ Name (Click for Fun Fact) -->
-        <h2 class="text-2xl md:text-3xl font-bold mb-2 cursor-pointer" id="fun-fact">
+        <!-- ✅ Name -->
+        <h2 class="text-2xl md:text-3xl font-bold mb-2">
             Gísli Marteinn Baldursson
         </h2>
-        <p id="fact-text" class="text-sm opacity-75 hidden"></p>
 
         <!-- ✅ Birth Date -->
         <div class="px-4 py-2 rounded-full bg-gray-700 text-lg md:text-xl mb-4">
@@ -122,11 +111,6 @@
         <!-- ✅ Dynamic Age Counter -->
         <div id="age" class="text-2xl md:text-3xl font-bold text-blue-300 mt-4 tracking-wide text-center fade">
             Reikna...
-        </div>
-
-        <!-- ✅ Hidden Easter Egg (Birthday Countdown) -->
-        <div id="birthday-countdown" class="text-lg text-gray-300 mt-4 hidden fade">
-            <strong>Afmæli 🥳:</strong> <span id="countdown"></span>
         </div>
     </div>
 
@@ -158,14 +142,22 @@
             setInterval(updateTime, 10);
         }
 
+        // ✅ Easter Egg: Click Face 5 Times for Popup
+        let clickCount = 0;
         document.getElementById('profile-img').addEventListener('click', () => {
-            document.getElementById('birthday-countdown').classList.toggle('hidden');
+            clickCount++;
+            if (clickCount === 5) {
+                alert("Vinsamlegast hættu");
+                clickCount = 0; // Reset counter
+            }
         });
 
+        // ✅ Dark Mode Toggle
         document.getElementById('dark-mode-toggle').addEventListener('click', () => {
             document.body.classList.toggle('dark-mode');
         });
 
+        // ✅ Share Button (Copy Link)
         document.getElementById('share-btn').addEventListener('click', () => {
             navigator.clipboard.writeText(window.location.href);
             alert("Hlekkur afritaður!");
