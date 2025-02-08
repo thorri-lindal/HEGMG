@@ -1,34 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="is">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hvað er Gísli Marteinn gamall?</title>
     
+    <!-- ✅ Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    
     <!-- ✅ Correct Tailwind CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
     <style>
-        .font-playfair {
-            font-family: 'Playfair Display', serif;
+        /* ✅ Apply Poppins as the main font */
+        body {
+            font-family: 'Poppins', sans-serif;
         }
-        .font-roboto {
-            font-family: 'Roboto', sans-serif;
+
+        /* ✅ Add an effect to "er" */
+        .highlight {
+            position: relative;
+            color: #facc15; /* Yellow accent */
+            font-weight: 700;
         }
-        .glow {
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3),
-                        0 0 30px rgba(255, 255, 255, 0.2);
+        
+        .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #facc15; /* Yellow underline */
+            animation: pulse 1.5s infinite;
         }
-        .text-shadow {
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+
+        @keyframes pulse {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
         }
     </style>
 </head>
 
-<body class="bg-gray-800 min-h-screen flex items-center justify-center p-4 font-roboto text-white">
+<body class="bg-gray-800 min-h-screen flex flex-col items-center justify-center p-4 text-white">
+    
+    <!-- ✅ Title at the top -->
+    <h1 class="text-4xl md:text-5xl font-bold text-center mb-6">
+        Hvað <span class="highlight">er</span> Gísli Marteinn gamall?
+    </h1>
+
     <div class="relative bg-gray-900 bg-opacity-90 backdrop-blur-lg p-8 rounded-2xl shadow-2xl max-w-md w-full mx-auto text-center border border-gray-700">
         
-        <!-- ✅ Profile Image (Now inside the container) -->
+        <!-- ✅ Profile Image -->
         <div class="flex justify-center mb-4">
             <img 
                 src="assets/IMG_7022.jpeg" 
@@ -38,40 +62,47 @@
         </div>
 
         <!-- ✅ Name -->
-        <h1 class="font-playfair text-3xl md:text-4xl mb-4 text-white font-bold">
+        <h2 class="text-3xl md:text-4xl mb-4 font-bold">
             Gísli Marteinn Baldursson
-        </h1>
+        </h2>
 
         <!-- ✅ Birth Date -->
-        <div class="px-4 py-2 rounded-full bg-gray-700 text-white text-lg md:text-xl mb-4">
-            Fæddur: February 26, 1972
+        <div class="px-4 py-2 rounded-full bg-gray-700 text-lg md:text-xl mb-4">
+            Fæddur: 26. Febrúar 1972
         </div>
 
         <!-- ✅ Dynamic Age Counter -->
-        <div id="age" class="text-2xl md:text-3xl font-bold text-blue-300 mt-4 tracking-wide">
-            Calculating...
+        <div id="age" class="text-2xl md:text-3xl font-bold text-blue-300 mt-4 tracking-wide text-center">
+            Reikna...
         </div>
     </div>
 
     <script>
         function calculateAge() {
-            const birthDate = new Date('1972-02-26');
-            const now = new Date();
-            
-            const diffTime = Math.abs(now - birthDate);
-            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-            const years = Math.floor(diffDays / 365.25);
-            const remainingDays = Math.floor(diffDays % 365.25);
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const seconds = now.getSeconds().toString().padStart(2, '0');
-            
-            document.getElementById('age').textContent = 
-                `${years} years, ${remainingDays} days, ${hours}h ${minutes}m ${seconds}s`;
+            const birthDate = new Date('1972-02-26T00:00:00'); // Exact birth time
+
+            function updateTime() {
+                const now = performance.now(); // High precision timestamp
+                const nowDate = new Date();
+                
+                const diffTime = nowDate - birthDate + now; // Adjust with milliseconds
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                const years = Math.floor(diffDays / 365.25);
+                const remainingDays = Math.floor(diffDays % 365.25);
+                const hours = nowDate.getHours().toString().padStart(2, '0');
+                const minutes = nowDate.getMinutes().toString().padStart(2, '0');
+                const seconds = nowDate.getSeconds().toString().padStart(2, '0');
+                const milliseconds = Math.floor(nowDate.getMilliseconds()).toString().padStart(3, '0'); // Three-digit ms
+
+                document.getElementById('age').textContent = 
+                    `${years} ár, ${remainingDays} dagar, ${hours} klst, ${minutes} mín, ${seconds} sek, ${milliseconds} ms`;
+            }
+
+            updateTime();
+            setInterval(updateTime, 10); // Update every 10ms
         }
 
         calculateAge();
-        setInterval(calculateAge, 1000);
     </script>
 </body>
 </html>
