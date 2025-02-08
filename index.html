@@ -45,16 +45,32 @@
             color: white;
         }
 
-        .profile-img {
-            transition: opacity 0.5s ease-in-out;
+        /* Smooth Fade Hover Effect */
+        .profile-container {
+            position: relative;
             width: 160px;
             height: 160px;
-            object-fit: cover;
-            cursor: pointer;
         }
 
-        .profile-img:hover {
-            content: url("assets/IMG_7031.jpeg");
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+            position: absolute;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .profile-img.hover {
+            opacity: 0;
+        }
+
+        .profile-container:hover .profile-img {
+            opacity: 0;
+        }
+
+        .profile-container:hover .profile-img.hover {
+            opacity: 1;
         }
 
         /* Status Bar */
@@ -125,12 +141,18 @@
 
     <div class="relative glass rounded-2xl shadow-2xl max-w-md w-full mx-auto text-center">
         
-        <div class="flex justify-center mb-4">
+        <!-- Smooth Image Hover Effect -->
+        <div class="profile-container mx-auto">
             <img 
                 src="assets/IMG_7022.jpeg" 
                 alt="Gísli Marteinn Baldursson" 
-                class="profile-img rounded-lg shadow-xl border-4 border-gray-600 object-cover ring-4 ring-white ring-opacity-20"
+                class="profile-img"
                 id="profile-img"
+            >
+            <img 
+                src="assets/IMG_7031.jpeg" 
+                alt="Gísli Marteinn Baldursson Smiling" 
+                class="profile-img hover"
             >
         </div>
 
@@ -146,7 +168,8 @@
             Reikna...
         </div>
 
-        <!-- Status Bar (Hidden at start) -->
+        <p id="visit-counter" class="text-sm text-gray-400 mt-2">Sæki gögn...</p>
+
         <div class="status-container" id="status-container">
             <div class="status-bar"></div>
             <div class="status-text">17%</div>
@@ -156,26 +179,17 @@
     <a href="https://www.thorri.online" target="_blank" class="footer">Made by Þorri</a>
 
     <script>
-        function updateAge() {
-            const birthDate = new Date('1972-02-26T00:00:00');
+        async function updateVisitCounter() {
+            const url = "https://raw.githubusercontent.com/thorri-lindal/HEGMG/main/visits.json";
 
-            function calculate() {
-                const now = new Date();
-                const diff = now - birthDate;
-                
-                const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
-                const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24));
-                const hours = now.getHours().toString().padStart(2, '0');
-                const minutes = now.getMinutes().toString().padStart(2, '0');
-                const seconds = now.getSeconds().toString().padStart(2, '0');
-                const milliseconds = now.getMilliseconds().toString().padStart(3, '0');
-
-                document.getElementById('age').innerHTML = 
-                    `${years} ár, ${days} dagar, ${hours} klst, ${minutes} mín, ${seconds} sek, ${milliseconds} ms`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                let currentCount = data.count || 0;
+                document.getElementById('visit-counter').innerText = `Heimsóknir: ${currentCount}`;
+            } catch (error) {
+                console.error("Error fetching visit count:", error);
             }
-
-            calculate();
-            setInterval(calculate, 10);
         }
 
         let clickCount = 0;
@@ -186,7 +200,7 @@
             }
         });
 
-        updateAge();
+        updateVisitCounter();
     </script>
 </body>
 </html>
