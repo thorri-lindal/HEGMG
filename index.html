@@ -45,7 +45,6 @@
             color: white;
         }
 
-        /* Smooth Fade Hover Effect */
         .profile-container {
             position: relative;
             width: 160px;
@@ -71,46 +70,6 @@
 
         .profile-container:hover .profile-img.hover {
             opacity: 1;
-        }
-
-        /* Status Bar */
-        .status-container {
-            display: none;
-            width: 80%;
-            max-width: 400px;
-            height: 40px;
-            background: rgba(255, 0, 0, 0.2);
-            border: 2px solid rgba(255, 0, 0, 0.5);
-            border-radius: 15px;
-            overflow: hidden;
-            position: absolute;
-            top: 80%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .status-bar {
-            width: 17%;
-            height: 100%;
-            background: linear-gradient(90deg, rgba(120, 0, 0, 0.6), rgba(255, 0, 0, 0.9));
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
-            animation: pulseRed 2s infinite alternate;
-        }
-
-        @keyframes pulseRed {
-            0% { background: rgba(120, 0, 0, 0.6); box-shadow: 0 0 5px rgba(255, 0, 0, 0.6); }
-            100% { background: rgba(255, 0, 0, 0.9); box-shadow: 0 0 15px rgba(255, 0, 0, 1); }
-        }
-
-        .status-text {
-            position: absolute;
-            width: 100%;
-            text-align: center;
-            font-weight: bold;
-            color: white;
-            font-size: 18px;
-            top: 50%;
-            transform: translateY(-50%);
         }
 
         .footer {
@@ -141,19 +100,9 @@
 
     <div class="relative glass rounded-2xl shadow-2xl max-w-md w-full mx-auto text-center">
         
-        <!-- Smooth Image Hover Effect -->
         <div class="profile-container mx-auto">
-            <img 
-                src="assets/IMG_7022.jpeg" 
-                alt="Gísli Marteinn Baldursson" 
-                class="profile-img"
-                id="profile-img"
-            >
-            <img 
-                src="assets/IMG_7031.jpeg" 
-                alt="Gísli Marteinn Baldursson Smiling" 
-                class="profile-img hover"
-            >
+            <img src="assets/IMG_7022.jpeg" alt="Gísli Marteinn Baldursson" class="profile-img" id="profile-img">
+            <img src="assets/IMG_7031.jpeg" alt="Gísli Marteinn Baldursson Smiling" class="profile-img hover">
         </div>
 
         <h2 class="text-2xl md:text-3xl font-bold mb-2 text-white">
@@ -170,15 +119,30 @@
 
         <p id="visit-counter" class="text-sm text-gray-400 mt-2">Sæki gögn...</p>
 
-        <div class="status-container" id="status-container">
-            <div class="status-bar"></div>
-            <div class="status-text">17%</div>
-        </div>
     </div>
 
     <a href="https://www.thorri.online" target="_blank" class="footer">Made by Þorri</a>
 
     <script>
+        function calculateAge() {
+            const birthDate = new Date('1972-02-26T00:00:00Z');
+            const now = new Date();
+
+            const diffTime = now - birthDate;
+            const diffMilliseconds = diffTime % 1000;
+            const diffSeconds = Math.floor(diffTime / 1000) % 60;
+            const diffMinutes = Math.floor(diffTime / (1000 * 60)) % 60;
+            const diffHours = Math.floor(diffTime / (1000 * 60 * 60)) % 24;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) % 365;
+            const diffYears = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 365.25));
+
+            document.getElementById('age').innerText = 
+                `${diffYears} ár, ${diffDays} dagar, ${diffHours} klst, ${diffMinutes} mín, ${diffSeconds} sek, ${diffMilliseconds} ms`;
+        }
+
+        setInterval(calculateAge, 1);
+        calculateAge();
+
         async function updateVisitCounter() {
             const url = "https://raw.githubusercontent.com/thorri-lindal/HEGMG/main/visits.json";
 
@@ -191,14 +155,6 @@
                 console.error("Error fetching visit count:", error);
             }
         }
-
-        let clickCount = 0;
-        document.getElementById("profile-img").addEventListener("click", function() {
-            clickCount++;
-            if (clickCount === 10) {
-                document.getElementById("status-container").style.display = "block";
-            }
-        });
 
         updateVisitCounter();
     </script>
