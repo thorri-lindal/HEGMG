@@ -17,28 +17,23 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        /* ✅ Add an effect to "er" */
+        /* ✅ Add a pulsating glow effect to "er" */
         .highlight {
             position: relative;
             color: #facc15; /* Yellow accent */
             font-weight: 700;
-        }
-        
-        .highlight::after {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background-color: #facc15; /* Yellow underline */
-            animation: pulse 1.5s infinite;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.8), 0 0 20px rgba(255, 204, 0, 0.5);
+            animation: glow 2s infinite alternate;
         }
 
-        @keyframes pulse {
-            0% { opacity: 0.3; }
-            50% { opacity: 1; }
-            100% { opacity: 0.3; }
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px rgba(255, 204, 0, 0.8), 0 0 20px rgba(255, 204, 0, 0.5); }
+            100% { text-shadow: 0 0 15px rgba(255, 204, 0, 1), 0 0 25px rgba(255, 204, 0, 0.7); }
+        }
+
+        /* ✅ Make the profile image a rounded square */
+        .rounded-square {
+            border-radius: 20px; /* Less than 50% for a rounded square */
         }
     </style>
 </head>
@@ -52,17 +47,17 @@
 
     <div class="relative bg-gray-900 bg-opacity-90 backdrop-blur-lg p-8 rounded-2xl shadow-2xl max-w-md w-full mx-auto text-center border border-gray-700">
         
-        <!-- ✅ Profile Image -->
+        <!-- ✅ Profile Image (Now rounded square) -->
         <div class="flex justify-center mb-4">
             <img 
                 src="assets/IMG_7022.jpeg" 
                 alt="Gísli Marteinn Baldursson" 
-                class="rounded-full shadow-xl border-4 border-gray-600 w-40 h-40 object-cover ring-4 ring-white ring-opacity-20"
+                class="rounded-square shadow-xl border-4 border-gray-600 w-40 h-40 object-cover ring-4 ring-white ring-opacity-20"
             >
         </div>
 
-        <!-- ✅ Name -->
-        <h2 class="text-3xl md:text-4xl mb-4 font-bold">
+        <!-- ✅ Name (Now fits above the "Fæddur" section) -->
+        <h2 class="text-2xl md:text-3xl font-bold mb-2">
             Gísli Marteinn Baldursson
         </h2>
 
