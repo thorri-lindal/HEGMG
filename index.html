@@ -57,25 +57,33 @@
             content: url("assets/IMG_7031.jpeg");
         }
 
+        /* Status Bar */
         .status-container {
             display: none;
-            width: 100%;
-            max-width: 300px;
-            height: 30px;
+            width: 80%;
+            max-width: 400px;
+            height: 40px;
             background: rgba(255, 0, 0, 0.2);
             border: 2px solid rgba(255, 0, 0, 0.5);
             border-radius: 15px;
             overflow: hidden;
-            position: relative;
-            margin-top: 20px;
+            position: absolute;
+            top: 80%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
         .status-bar {
             width: 17%;
             height: 100%;
-            background: linear-gradient(90deg, rgba(255, 0, 0, 0.5), rgba(255, 0, 0, 1));
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
-            transition: width 0.5s ease-in-out;
+            background: linear-gradient(90deg, rgba(120, 0, 0, 0.6), rgba(255, 0, 0, 0.9));
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+            animation: pulseRed 2s infinite alternate;
+        }
+
+        @keyframes pulseRed {
+            0% { background: rgba(120, 0, 0, 0.6); box-shadow: 0 0 5px rgba(255, 0, 0, 0.6); }
+            100% { background: rgba(255, 0, 0, 0.9); box-shadow: 0 0 15px rgba(255, 0, 0, 1); }
         }
 
         .status-text {
@@ -84,7 +92,7 @@
             text-align: center;
             font-weight: bold;
             color: white;
-            font-size: 16px;
+            font-size: 18px;
             top: 50%;
             transform: translateY(-50%);
         }
@@ -138,8 +146,6 @@
             Reikna...
         </div>
 
-        <p id="visit-counter" class="counter"></p>
-
         <!-- Status Bar (Hidden at start) -->
         <div class="status-container" id="status-container">
             <div class="status-bar"></div>
@@ -172,16 +178,6 @@
             setInterval(calculate, 10);
         }
 
-        async function updateVisitCounter() {
-            try {
-                const response = await fetch("https://api.countapi.xyz/hit/hegmg/visits");
-                const data = await response.json();
-                document.getElementById('visit-counter').innerText = `Heimsóknir: ${data.value}`;
-            } catch (error) {
-                console.error("Error fetching visit count:", error);
-            }
-        }
-
         let clickCount = 0;
         document.getElementById("profile-img").addEventListener("click", function() {
             clickCount++;
@@ -190,7 +186,6 @@
             }
         });
 
-        updateVisitCounter();
         updateAge();
     </script>
 </body>
