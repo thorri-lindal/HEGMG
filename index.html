@@ -114,11 +114,6 @@
             animation: pulseRed 2s infinite alternate;
         }
 
-        @keyframes pulseRed {
-            0% { background: rgba(120, 0, 0, 0.6); box-shadow: 0 0 5px rgba(255, 0, 0, 0.6); }
-            100% { background: rgba(255, 0, 0, 0.9); box-shadow: 0 0 15px rgba(255, 0, 0, 1); }
-        }
-
         .status-text {
             position: absolute;
             width: 100%;
@@ -190,48 +185,54 @@
     <script>
         let mode = 0;
         let clickCount = 0;
+        let statusVisible = false;
 
         function updateAge() {
             const birthDate = new Date('1972-02-26T17:30:00');
+            const now = new Date();
+            const diff = now - birthDate;
 
-            function calculate() {
-                const now = new Date();
-                const diff = now - birthDate;
+            const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+            const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24));
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            const milliseconds = now.getMilliseconds();
 
-                const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
-                const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24));
-                const hours = now.getHours();
-                const minutes = now.getMinutes();
-                const seconds = now.getSeconds();
-                const milliseconds = now.getMilliseconds();
+            const totalMinutes = Math.floor(diff / (1000 * 60));
+            const timesWatched = Math.floor(totalMinutes / 99);
+            const timesListened = Math.floor(totalMinutes / 46);
 
-                const totalMinutes = Math.floor(diff / (1000 * 60));
-                const timesWatched = Math.floor(totalMinutes / 99);
-                const timesListened = Math.floor(totalMinutes / 46);
+            const ageText = `
+                <div class="age-item"><span class="number">${years}</span> ár</div>
+                <div class="age-item"><span class="number">${days}</span> dagar</div>
+                <div class="age-item"><span class="number">${hours}</span> klst</div>
+                <div class="age-item"><span class="number">${minutes}</span> mín</div>
+                <div class="age-item"><span class="number">${seconds}</span> sek</div>
+                <div class="age-item"><span class="number">${milliseconds}</span> ms</div>
+            `;
 
-                const ageText = `
-                    <div class="age-item"><span class="number">${years}</span> ár</div>
-                    <div class="age-item"><span class="number">${days}</span> dagar</div>
-                    <div class="age-item"><span class="number">${hours}</span> klst</div>
-                    <div class="age-item"><span class="number">${minutes}</span> mín</div>
-                    <div class="age-item"><span class="number">${seconds}</span> sek</div>
-                    <div class="age-item"><span class="number">${milliseconds}</span> ms</div>
-                `;
-
-                document.getElementById('age').innerHTML = mode === 0 ? ageText : mode === 1
-                    ? `Þú gætir horft á "Með allt á hreinu" <span class="number">${timesWatched}</span> sinnum á þeim tíma.`
-                    : `Þú gætir hlustað á "XXX Rottweiler hundar" <span class="number">${timesListened}</span> sinnum á þeim tima.`;
-            }
-
-            calculate();
-            setInterval(calculate, 10);
+            document.getElementById('age').innerHTML = mode === 0 ? ageText :
+                mode === 1 ? `Þú gætir horft á "Með allt á hreinu" <span class="number">${timesWatched}</span> sinnum.` :
+                `Þú gætir hlustað á "XXX Rottweiler hundar" <span class="number">${timesListened}</span> sinnum.`;
         }
 
         document.getElementById("toggle-mode").addEventListener("click", function() {
             mode = (mode + 1) % 3;
+            updateAge();
         });
 
-        updateAge();
+        document.getElementById("profile-img").addEventListener("click", function() {
+            if (!statusVisible) {
+                clickCount++;
+                if (clickCount >= 10) {
+                    document.getElementById("status-container").style.display = "block";
+                    statusVisible = true;
+                }
+            }
+        });
+
+        setInterval(updateAge, 10);
     </script>
 
 </body>
