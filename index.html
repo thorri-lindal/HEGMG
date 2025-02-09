@@ -32,7 +32,7 @@
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 2.5rem;
+            padding: 2rem;
             width: 90%;
             max-width: 400px;
             color: white;
@@ -43,11 +43,10 @@
 
         .profile-img {
             transition: opacity 0.5s ease-in-out;
-            width: 180px;
-            height: 180px;
+            width: 150px;
+            height: 150px;
             object-fit: cover;
             cursor: pointer;
-            transform: translateY(-10px);
             border-radius: 10px;
             border: 3px solid rgba(255, 255, 255, 0.3);
         }
@@ -56,14 +55,35 @@
             content: url("assets/IMG_7031.jpeg");
         }
 
+        .toggle-button {
+            background: #110d2e;
+            color: #969696;
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 3px solid #2a2a2a;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .toggle-button:hover {
+            background: #25264b;
+        }
+
         #age {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             text-align: center;
-            font-size: clamp(1.2rem, 4vw, 1.5rem);
-            line-height: 1.5;
+            font-size: 1.5rem;
+            line-height: 1.4;
             margin-top: 20px;
+        }
+
+        .age-item {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            font-size: 1.5rem;
         }
 
         .number {
@@ -75,13 +95,13 @@
             display: none;
             width: 80%;
             max-width: 400px;
-            height: 40px;
+            height: 30px;
             background: rgba(255, 0, 0, 0.2);
             border: 2px solid rgba(255, 0, 0, 0.5);
             border-radius: 15px;
             overflow: hidden;
             position: absolute;
-            bottom: -60px;
+            bottom: -50px;
             left: 50%;
             transform: translateX(-50%);
         }
@@ -105,7 +125,7 @@
             text-align: center;
             font-weight: bold;
             color: white;
-            font-size: 18px;
+            font-size: 14px;
             top: 50%;
             transform: translateY(-50%);
         }
@@ -114,27 +134,28 @@
             font-family: 'Montserrat', sans-serif;
             font-size: 10px;
             font-weight: 700;
-            color: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.3);
             position: absolute;
             bottom: 5px;
             left: 50%;
             transform: translateX(-50%);
-            text-transform: uppercase;
         }
 
         .footer:hover {
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.6);
         }
-
-        
     </style>
 </head>
 
 <body>
     
-    <h1 class="text-4xl md:text-5xl font-light text-center mb-6 text-white">
+    <h1 class="text-4xl font-light text-center mb-6 text-white">
         Hvað <span class="highlight">er</span> Gísli Marteinn gamall?
     </h1>
+
+    <button id="toggle-mode" class="toggle-button">
+        Skipta um mælingu
+    </button>
 
     <div class="glass">
         
@@ -151,16 +172,12 @@
             Gísli Marteinn Baldursson
         </h2>
 
-        <div class="px-3 py-1 rounded-md bg-gray-700 text-sm sm:text-base md:text-lg mb-4 text-white text-center w-fit mx-auto">
+        <div class="px-3 py-1 rounded-md bg-gray-700 text-sm mb-4 text-white text-center w-fit mx-auto">
             Fæddur: 26. Febrúar | 1972 | <span class="highlight">17:30</span>
         </div>
-        
 
-        <div id="age">
-            Reikna...
-        </div>
+        <div id="age">Reikna...</div>
 
-        <!-- Status Bar (Hidden at start) -->
         <div class="status-container" id="status-container">
             <div class="status-bar"></div>
             <div class="status-text">17%</div>
@@ -168,9 +185,12 @@
 
     </div>
 
-    <a href="https://www.thorri.online" target="_blank" class="footer">Made by Þorri</a>
+    <div class="footer">MADE BY ÞORRI</div>
 
     <script>
+        let mode = 0;
+        let clickCount = 0;
+
         function updateAge() {
             const birthDate = new Date('1972-02-26T17:30:00');
 
@@ -180,31 +200,35 @@
 
                 const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
                 const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24));
-                const hours = now.getHours().toString().padStart(2, '0');
-                const minutes = now.getMinutes().toString().padStart(2, '0');
-                const seconds = now.getSeconds().toString().padStart(2, '0');
-                const milliseconds = now.getMilliseconds().toString().padStart(3, '0');
+                const hours = now.getHours();
+                const minutes = now.getMinutes();
+                const seconds = now.getSeconds();
+                const milliseconds = now.getMilliseconds();
 
-                document.getElementById('age').innerHTML = `
-                    <span><span class="number">${years}</span> ár</span>
-                    <span><span class="number">${days}</span> dagar</span>
-                    <span><span class="number">${hours}</span> klst</span>
-                    <span><span class="number">${minutes}</span> mín</span>
-                    <span><span class="number">${seconds}</span> sek</span>
-                    <span><span class="number">${milliseconds}</span> ms</span>
+                const totalMinutes = Math.floor(diff / (1000 * 60));
+                const timesWatched = Math.floor(totalMinutes / 99);
+                const timesListened = Math.floor(totalMinutes / 46);
+
+                const ageText = `
+                    <div class="age-item"><span class="number">${years}</span> ár</div>
+                    <div class="age-item"><span class="number">${days}</span> dagar</div>
+                    <div class="age-item"><span class="number">${hours}</span> klst</div>
+                    <div class="age-item"><span class="number">${minutes}</span> mín</div>
+                    <div class="age-item"><span class="number">${seconds}</span> sek</div>
+                    <div class="age-item"><span class="number">${milliseconds}</span> ms</div>
                 `;
+
+                document.getElementById('age').innerHTML = mode === 0 ? ageText : mode === 1
+                    ? `Þú gætir horft á "Með allt á hreinu" <span class="number">${timesWatched}</span> sinnum á þeim tíma.`
+                    : `Þú gætir hlustað á "XXX Rottweiler hundar" <span class="number">${timesListened}</span> sinnum á þeim tima.`;
             }
 
             calculate();
             setInterval(calculate, 10);
         }
 
-        let clickCount = 0;
-        document.getElementById("profile-img").addEventListener("click", function() {
-            clickCount++;
-            if (clickCount === 10) {
-                document.getElementById("status-container").style.display = "block";
-            }
+        document.getElementById("toggle-mode").addEventListener("click", function() {
+            mode = (mode + 1) % 3;
         });
 
         updateAge();
