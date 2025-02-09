@@ -19,21 +19,13 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            position: relative;
             color: white;
         }
 
         .highlight {
-            position: relative;
             color: #facc15;
             font-weight: 700;
             text-shadow: 0 0 5px rgba(255, 204, 0, 0.4);
-            animation: subtleGlow 2s infinite alternate;
-        }
-
-        @keyframes subtleGlow {
-            0% { text-shadow: 0 0 3px rgba(255, 204, 0, 0.3); }
-            100% { text-shadow: 0 0 6px rgba(255, 204, 0, 0.5); }
         }
 
         .glass {
@@ -41,9 +33,12 @@
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 2.5rem;
-            height: 600px;
             width: 90%;
+            max-width: 400px;
             color: white;
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
         }
 
         .profile-img {
@@ -52,11 +47,28 @@
             height: 180px;
             object-fit: cover;
             cursor: pointer;
-            transform: translateY(-20px);
+            transform: translateY(-10px);
+            border-radius: 10px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
         }
 
         .profile-img:hover {
             content: url("assets/IMG_7031.jpeg");
+        }
+
+        #age {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            line-height: 1.5;
+            margin-top: 20px;
+        }
+
+        .number {
+            font-weight: bold;
+            color: #facc15;
         }
 
         .status-container {
@@ -69,9 +81,9 @@
             border-radius: 15px;
             overflow: hidden;
             position: absolute;
-            top: 90%;
+            bottom: -60px;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translateX(-50%);
         }
 
         .status-bar {
@@ -102,36 +114,19 @@
             font-family: 'Montserrat', sans-serif;
             font-size: 10px;
             font-weight: 700;
-            color: rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.2);
             position: absolute;
             bottom: 5px;
             left: 50%;
             transform: translateX(-50%);
             text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: opacity 0.3s ease-in-out;
         }
 
         .footer:hover {
             color: rgba(255, 255, 255, 0.5);
         }
 
-            #age {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: wrap;
-        text-align: center;
-        overflow: hidden;
-        white-space: normal; /* Allow wrapping but controlled */
-        width: 100%;
-        max-width: 100%;
-        padding: 0 10px;
-        font-size: clamp(1rem, 4vw, 1.5rem);
-        word-break: break-word; /* Ensures long words don’t break layout */
-        }
-
-
+        
     </style>
 </head>
 
@@ -141,26 +136,27 @@
         Hvað <span class="highlight">er</span> Gísli Marteinn gamall?
     </h1>
 
-    <div class="relative glass rounded-2xl shadow-2xl max-w-md w-full mx-auto text-center">
+    <div class="glass">
         
         <div class="flex justify-center mb-4">
             <img 
                 src="assets/IMG_7022.jpeg" 
                 alt="Gísli Marteinn Baldursson" 
-                class="profile-img rounded-lg shadow-xl border-4 border-gray-600 object-cover ring-4 ring-white ring-opacity-20"
+                class="profile-img"
                 id="profile-img"
             >
         </div>
 
-        <h2 class="text-2xl md:text-3xl font-bold mb-2 text-white">
+        <h2 class="text-2xl font-bold mb-2 text-white">
             Gísli Marteinn Baldursson
         </h2>
 
-        <div class="px-4 py-2 rounded-full bg-gray-700 text-lg md:text-xl mb-4 text-white">
+        <div class="px-3 py-1 rounded-md bg-gray-700 text-sm sm:text-base md:text-lg mb-4 text-white text-center w-fit mx-auto">
             Fæddur: 26. Febrúar | 1972 | <span class="highlight">17:30</span>
         </div>
+        
 
-        <div id="age" class="text-2xl md:text-2xl font-bold text-blue-300 mt-8 tracking-wide text-center">
+        <div id="age">
             Reikna...
         </div>
 
@@ -169,6 +165,7 @@
             <div class="status-bar"></div>
             <div class="status-text">17%</div>
         </div>
+
     </div>
 
     <a href="https://www.thorri.online" target="_blank" class="footer">Made by Þorri</a>
@@ -180,7 +177,7 @@
             function calculate() {
                 const now = new Date();
                 const diff = now - birthDate;
-                
+
                 const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
                 const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24));
                 const hours = now.getHours().toString().padStart(2, '0');
@@ -188,8 +185,14 @@
                 const seconds = now.getSeconds().toString().padStart(2, '0');
                 const milliseconds = now.getMilliseconds().toString().padStart(3, '0');
 
-                document.getElementById('age').innerHTML = 
-                    `${years} ár, ${days} dagar, ${hours} klst, ${minutes} mín, ${seconds} sek, ${milliseconds} ms`;
+                document.getElementById('age').innerHTML = `
+                    <span><span class="number">${years}</span> ár</span>
+                    <span><span class="number">${days}</span> dagar</span>
+                    <span><span class="number">${hours}</span> klst</span>
+                    <span><span class="number">${minutes}</span> mín</span>
+                    <span><span class="number">${seconds}</span> sek</span>
+                    <span><span class="number">${milliseconds}</span> ms</span>
+                `;
             }
 
             calculate();
@@ -206,5 +209,6 @@
 
         updateAge();
     </script>
+
 </body>
 </html>
