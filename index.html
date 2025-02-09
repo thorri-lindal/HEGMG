@@ -41,7 +41,8 @@
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 2.5rem;
-            height: 500px;
+            height: 600px;
+            width: 90%;
             color: white;
         }
 
@@ -58,7 +59,6 @@
             content: url("assets/IMG_7031.jpeg");
         }
 
-        /* Status Bar */
         .status-container {
             display: none;
             width: 80%;
@@ -143,7 +143,7 @@
             Fæddur: 26. Febrúar 1972
         </div>
 
-        <div id="age" class="text-2xl md:text-3xl font-bold text-blue-300 mt-4 tracking-wide text-center">
+        <div id="age" class="text-2xl md:text-2xl font-bold text-blue-300 mt-8 tracking-wide text-center">
             Reikna...
         </div>
 
@@ -158,7 +158,7 @@
 
     <script>
         function updateAge() {
-            const birthDate = new Date('1972-02-26T00:00:00');
+            const birthDate = new Date('1972-02-26T17:30:00');
 
             function calculate() {
                 const now = new Date();
